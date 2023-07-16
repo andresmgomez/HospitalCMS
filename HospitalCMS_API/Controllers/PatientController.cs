@@ -15,7 +15,7 @@ namespace HospitalCMS_API.Controllers
             return Ok(SeedPatients.samplePatients);
         }
 
-        [HttpGet("patientId")]
+        [HttpGet("patientId", Name = "GetPatient")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -34,15 +34,15 @@ namespace HospitalCMS_API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<PatientModelDto> AppendPatientData(PatientModelDto newPatient)
+        public ActionResult<PatientModelDto> CreatePatientData([FromBody] PatientModelDto newPatient)
         {
-            if (newPatient == null) return BadRequest(newPatient);
+            if (newPatient == null || newPatient.Id == 0) return BadRequest(newPatient);
           
             SeedPatients.samplePatients.Add(newPatient);
      
-            return Ok(newPatient);
+            return CreatedAtRoute("GetPatient", new { id = newPatient.Id  }, newPatient);
            
         }
     }
