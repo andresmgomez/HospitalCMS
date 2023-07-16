@@ -9,17 +9,31 @@ namespace HospitalCMS_API.Controllers
     public class PatientController : ControllerBase 
     {
         [HttpGet]
-        public IEnumerable<PatientModelDto> FetchPatientsData()
+        public ActionResult<IEnumerable<PatientModelDto>> FetchPatientsData()
         {
-            return SeedPatients.samplePatients;
+            return Ok(SeedPatients.samplePatients);
         }
-        [HttpGet("patientId")]
-        public PatientModelDto FetchPatientData(int patientId)
+
+        [HttpGet("{patientId:int}")]
+        public ActionResult<PatientModelDto> FetchPatientData(int patientId)
         {
+
+            if (patientId == 0)
+            {
+                return BadRequest();
+
+            }
+
             var patientData = SeedPatients.samplePatients.FirstOrDefault(
                 patient => patient.Id == patientId
                 );
-            return patientData;
+ 
+            if (patientData == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(patientData);
         }
     }
 }
