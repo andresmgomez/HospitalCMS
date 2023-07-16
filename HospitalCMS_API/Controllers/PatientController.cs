@@ -13,6 +13,13 @@ namespace HospitalCMS_API.Controllers
         {
             return SeedPatients.samplePatients;
         }
-        
+        [HttpGet("patientId")]
+        public PatientModelDto FetchPatientData(int patientId)
+        {
+            var patientData = SeedPatients.samplePatients.FirstOrDefault(
+                patient => patient.Id == patientId
+                );
+            return patientData;
+        }
     }
 }
