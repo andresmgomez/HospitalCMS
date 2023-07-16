@@ -1,4 +1,6 @@
-﻿namespace HospitalCMS_API.Models.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HospitalCMS_API.Models.DTOs
 {
     public class PatientModelDto
     {
