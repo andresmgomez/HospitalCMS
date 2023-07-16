@@ -38,7 +38,14 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<PatientModelDto> CreatePatientData([FromBody] PatientModelDto newPatient)
         {
-            if (newPatient == null || newPatient.Id == 0) return BadRequest(newPatient);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            else if (newPatient == null || newPatient.Id == 0) {
+                return BadRequest(newPatient); 
+            };
           
             SeedPatients.samplePatients.Add(newPatient);
      
