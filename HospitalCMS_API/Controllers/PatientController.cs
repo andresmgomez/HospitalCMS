@@ -9,12 +9,16 @@ namespace HospitalCMS_API.Controllers
     public class PatientController : ControllerBase 
     {
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<PatientModelDto>> FetchPatientsData()
         {
             return Ok(SeedPatients.samplePatients);
         }
 
         [HttpGet("{patientId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<PatientModelDto> FetchPatientData(int patientId)
         {
 
