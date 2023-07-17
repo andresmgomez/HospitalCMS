@@ -38,12 +38,19 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<PatientModelDto> CreatePatientData([FromBody] PatientModelDto newPatient)
         {
+            var existingPatient = SeedPatients.samplePatients.FirstOrDefault(patient => patient.LastName == newPatient.LastName);
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            else if (newPatient == null || newPatient.Id == 0) {
+            else if (existingPatient != null)
+            {
+                ModelState.AddModelError("ValidateError", "Patient already exists in the system");
+            }
+
+            else if (newPatient.Id == 0) {
                 return BadRequest(newPatient); 
             };
           
