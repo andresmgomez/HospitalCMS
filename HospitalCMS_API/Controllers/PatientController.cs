@@ -1,5 +1,6 @@
 ﻿using HospitalCMS_API.Data;
 using HospitalCMS_API.Models.DTOs;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalCMS_API.Controllers
@@ -57,7 +58,24 @@ namespace HospitalCMS_API.Controllers
             SeedPatients.samplePatients.Add(newPatient);
      
             return CreatedAtRoute("GetPatient", new { id = newPatient.Id  }, newPatient);
+        }
+
+        [HttpPatch("{patientId:int}", Name = "UpdatePatient")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdatePatientData(int patientId, JsonPatchDocument<PatientModelDto> updatePatient)
+        {
+            if (updatePatient == null || patientId == 0) return BadRequest();
            
+            var patientRecord = SeedPatients.samplePatients.FirstOrDefault(patient => patient.Id == patientId);
+
+            if (patientRecord == null) return BadRequest();
+
+            updatePatient.ApplyTo(patientRecord, ModelState);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            return NoContent();
         }
     }
 }
