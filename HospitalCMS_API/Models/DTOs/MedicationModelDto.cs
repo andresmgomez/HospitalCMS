@@ -1,8 +1,12 @@
-﻿namespace HospitalCMS_API.Models.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HospitalCMS_API.Models.DTOs
 {
     public class MedicationModelDto
     {
+        [Key]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string Dosage { get; set; }
         public string Type { get; set; }
