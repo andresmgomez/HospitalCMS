@@ -11,5 +11,6 @@
         public string Treatment { get; set; }
         public string ApprovedBy { get; set; }
         public DateTime Prescribed { get; set; }
+        public int RefillsNumber { get; set; }
     }
 }

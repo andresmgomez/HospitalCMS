@@ -6,8 +6,8 @@
         public string Name { get; set; }
         public string Dosage { get; set; }
         public string Type { get; set; }
-        public int Intake { get; set; }
-        public string Duration { get; set; }
+        public int IntakeAmount { get; set; }
+        public string IntakeTimes { get; set; }
         public string Treatment { get; set;}
 
     }
