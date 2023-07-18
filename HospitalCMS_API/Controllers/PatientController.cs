@@ -16,32 +16,44 @@ namespace HospitalCMS_API.Controllers
             return Ok(SeedPatients.samplePatients);
         }
 
-        [HttpGet("patientId", Name = "GetPatient")]
+        [HttpGet("patientName", Name = "GetPatient")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<PatientModelDto> FetchPatientData(int patientId)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<PatientModelDto> FetchPatientData(string lastName)
         {
-
-            if (patientId == 0) return BadRequest();
+            if (lastName == null)
+            {
+                return NotFound();
+            }
 
             var patientData = SeedPatients.samplePatients.FirstOrDefault(
-                patient => patient.Id == patientId
+                patient => patient.LastName == lastName
                 );
- 
-            if (patientData == null) return NotFound();
-            
+
+            if (patientData == null)
+            {
+                ModelState.AddModelError("ValidateError", "An error has occured. Last name is case sensitive");
+                return BadRequest(ModelState);
+            }
+
             return Ok(patientData);
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status504GatewayTimeout)]
         public ActionResult<PatientModelDto> CreatePatientData([FromBody] PatientModelDto newPatient)
         {
-            if (newPatient == null || newPatient.Id == 0) return BadRequest(newPatient);
+            if (newPatient == null || newPatient.Id == 0)
+            {
+                return StatusCode(StatusCodes.Status504GatewayTimeout);
+            }
 
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            else if (!ModelState.IsValid) {
+                return BadRequest(newPatient); 
+            };
 
             var existingPatient = SeedPatients.samplePatients.FirstOrDefault(patient => patient.Id == newPatient.Id);
 
@@ -52,7 +64,6 @@ namespace HospitalCMS_API.Controllers
             }
  
             SeedPatients.samplePatients.Add(newPatient);
-
             return CreatedAtRoute("GetPatient", new { id = newPatient.Id  }, newPatient);
         }
 

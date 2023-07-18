@@ -18,20 +18,28 @@ namespace HospitalCMS_API.Controllers
         [HttpGet("doctorName", Name = "GetDoctor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<DoctorModelDto> FetchDoctorData(string lastName)
         {
+            if (lastName == null)
+            {
+                return NotFound();
+            }
             var doctorData = SeedDoctors.hospitalDoctors.FirstOrDefault(
                 doctor => doctor.LastName == lastName);
 
-            if (doctorData == null) return NotFound();
-
+            if (doctorData == null)
+            {
+                ModelState.AddModelError("ValidateError", "An error has occured. Unable to find this doctor");
+                return BadRequest(ModelState);
+            }
             return Ok(doctorData);
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult CreateDoctorData([FromBody] DoctorModelDto newDoctor)
         {
             if (newDoctor == null || newDoctor.Id == 0)
@@ -40,9 +48,9 @@ namespace HospitalCMS_API.Controllers
             }
             else if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(newDoctor);
             }
-
+            
             var existingDoctor = SeedDoctors.hospitalDoctors.FirstOrDefault(doctor => doctor.Id == newDoctor.Id);
 
             if (existingDoctor != null)
