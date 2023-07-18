@@ -15,20 +15,44 @@ namespace HospitalCMS_API.Controllers
             return Ok(SeedDoctors.hospitalDoctors);
         }
 
-        [HttpGet("doctorId")]
+        [HttpGet("doctorName", Name = "GetDoctor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<DoctorModelDto> FetchDoctorData(int doctorId)
+        public ActionResult<DoctorModelDto> FetchDoctorData(string lastName)
         {
-            if (doctorId == 0) return BadRequest();
-
             var doctorData = SeedDoctors.hospitalDoctors.FirstOrDefault(
-                doctor => doctor.Id == doctorId);
+                doctor => doctor.LastName == lastName);
 
             if (doctorData == null) return NotFound();
 
             return Ok(doctorData);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult CreateDoctorData([FromBody] DoctorModelDto newDoctor)
+        {
+            if (newDoctor == null || newDoctor.Id == 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            else if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var existingDoctor = SeedDoctors.hospitalDoctors.FirstOrDefault(doctor => doctor.Id == newDoctor.Id);
+
+            if (existingDoctor != null)
+            {
+                ModelState.AddModelError("ValidateError", "Doctor already exists in the system");
+                return BadRequest(ModelState);
+            }
+
+            SeedDoctors.hospitalDoctors.Add(newDoctor);
+            return CreatedAtRoute("GetDoctor", new { id = newDoctor.Id }, newDoctor);
         }
     }
 }
