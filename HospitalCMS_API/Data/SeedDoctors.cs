@@ -9,42 +9,48 @@ namespace HospitalCMS_API.Data
             new DoctorModelDto
             {
                 Id = 1,
-                Name = "Omar Abbasi",
+                FirstName = "Omar",
+                LastName = "Abbasi",
                 DegreeInitials = "MD",
                 Specialty = "Psychiatry"
             },
              new DoctorModelDto
             {
                 Id = 2,
-                Name = "Anna Abraham",
+                FirstName = "Anna",
+                LastName = "Abraham",
                 DegreeInitials = "MD",
                 Specialty = "Hematology"
             },
              new DoctorModelDto
             {
                 Id = 3,
-                Name = "Gil Abramovici",
+                FirstName = "Gil",
+                LastName = "Abramovici",
                 DegreeInitials = "MD",
                 Specialty = "Psychiatry"
             },
               new DoctorModelDto
             {
                 Id = 4,
-                Name = "Alan Ackerman",
+                FirstName = "Alan",
+                LastName = "Ackerman",
                 DegreeInitials = "MD",
                 Specialty = "Cardiology"
             },
                new DoctorModelDto
             {
                 Id = 5,
-                Name = "Daniel Aghion",
+                FirstName = "Daniel",
+                LastName = "Aghion",
                 DegreeInitials = "MD",
                 Specialty = "Neurosurgery"
             },
                 new DoctorModelDto
             {
                 Id = 6,
-                Name = "Alian Aguila",
+                FirstName = "Alan",
+                LastName = "Aguila",
                 DegreeInitials = "MD",
                 Specialty = "Cardiology"
             },
