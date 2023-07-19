@@ -6,7 +6,7 @@ namespace HospitalCMS_API.Controllers
 {
     [Route("api/v1/hospital/patients/medications")]
     [ApiController]
-    public class MedicationController : Controller
+    public class MedicationController : ControllerBase
     {
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -15,17 +15,12 @@ namespace HospitalCMS_API.Controllers
             return Ok(SeedMedications.patientMedications);
         }
 
-        [HttpGet("medication")]
+        [HttpGet("medication", Name = "GetMedication")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
         public ActionResult<MedicationModelDto> FetchMedicationData(string medicationName)
         {
-
-            if (medicationName == null)
-            {
-                return BadRequest();
-            }
             var medicationData = SeedMedications.patientMedications.FirstOrDefault(
                 medication => medication.Name == medicationName);
 
@@ -35,6 +30,34 @@ namespace HospitalCMS_API.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(medicationData);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<MedicationModelDto> CreatePatientData([FromBody] MedicationModelDto newMedication)
+        {
+            if (newMedication == null || newMedication.Id == 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            else if (!ModelState.IsValid)
+            {
+                return BadRequest(newMedication);
+            };
+
+            var existingMedication = SeedMedications.patientMedications.FirstOrDefault(medication => medication.Id == newMedication.Id);
+
+            if (existingMedication != null)
+            {
+                ModelState.AddModelError("ValidateError", "Medication already exists in the system");
+                return BadRequest(ModelState);
+            }
+
+            SeedMedications.patientMedications.Add(newMedication);
+            return CreatedAtRoute("GetMedication", new { id = newMedication.Id }, newMedication);
         }
     }
 }

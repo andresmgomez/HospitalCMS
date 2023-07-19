@@ -16,17 +16,12 @@ namespace HospitalCMS_API.Controllers
             return Ok(SeedPatients.samplePatients);
         }
 
-        [HttpGet("patientName", Name = "GetPatient")]
+        [HttpGet("patient", Name = "GetPatient")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<PatientModelDto> FetchPatientData(string lastName)
         {
-            if (lastName == null)
-            {
-                return NotFound();
-            }
-
             var patientData = SeedPatients.samplePatients.FirstOrDefault(
                 patient => patient.LastName == lastName
                 );
@@ -43,12 +38,12 @@ namespace HospitalCMS_API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status504GatewayTimeout)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<PatientModelDto> CreatePatientData([FromBody] PatientModelDto newPatient)
         {
             if (newPatient == null || newPatient.Id == 0)
             {
-                return StatusCode(StatusCodes.Status504GatewayTimeout);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             else if (!ModelState.IsValid) {

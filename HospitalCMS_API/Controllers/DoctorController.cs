@@ -15,7 +15,7 @@ namespace HospitalCMS_API.Controllers
             return Ok(SeedDoctors.hospitalDoctors);
         }
 
-        [HttpGet("doctorName", Name = "GetDoctor")]
+        [HttpGet("doctor", Name = "GetDoctor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
