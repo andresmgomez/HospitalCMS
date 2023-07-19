@@ -29,7 +29,7 @@ namespace HospitalCMS_API.Data
               new MedicationModelDto
             {
                 Id = 3,
-                Name = "Licocaine",
+                Name = "Lidocaine",
                 Dosage = "5 mls",
                 Type = "Liquid",
                 IntakeAmount = 5,

@@ -59,5 +59,35 @@ namespace HospitalCMS_API.Controllers
             SeedMedications.patientMedications.Add(newMedication);
             return CreatedAtRoute("GetMedication", new { id = newMedication.Id }, newMedication);
         }
+
+        [HttpPut("medication")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateMedicationData(int medicationId, [FromBody] MedicationModelDto changeMedication)
+        {
+            if (changeMedication == null)
+            {
+                return NoContent();
+            }
+            else if (medicationId != changeMedication.Id)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            var chosenMedication = SeedMedications.patientMedications.FirstOrDefault(medication => medication.Id == changeMedication.Id);
+
+            if (chosenMedication != null)
+            {
+                chosenMedication.Name = changeMedication.Name;
+                chosenMedication.Dosage = changeMedication.Dosage;
+                chosenMedication.Type = changeMedication.Type;
+                chosenMedication.IntakeAmount = changeMedication.IntakeAmount;
+                chosenMedication.IntakeTimes = changeMedication.IntakeTimes;
+                chosenMedication.Treatment = changeMedication.Treatment;
+            }
+
+            return Ok(changeMedication);
+        }
     }
 }
