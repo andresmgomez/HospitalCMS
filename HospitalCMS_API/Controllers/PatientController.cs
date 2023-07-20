@@ -1,4 +1,5 @@
 ﻿using HospitalCMS_API.Data;
+using HospitalCMS_API.Models;
 using HospitalCMS_API.Models.DTOs;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<PatientModelDto>> FetchPatientsData()
         {
-            return Ok(SeedPatients.samplePatients);
+            return Ok(SeedPatients.hospitalPatients);
         }
 
         [HttpGet("patient", Name = "GetPatient")]
@@ -22,7 +23,7 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<PatientModelDto> FetchPatientData(string lastName)
         {
-            var patientData = SeedPatients.samplePatients.FirstOrDefault(
+            var patientData = SeedPatients.hospitalPatients.FirstOrDefault(
                 patient => patient.LastName == lastName
                 );
 
@@ -39,7 +40,7 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<PatientModelDto> CreatePatientData([FromBody] PatientModelDto newPatient)
+        public ActionResult<PatientModel> CreatePatientData([FromBody] PatientModel newPatient)
         {
             if (newPatient == null || newPatient.Id == 0)
             {
@@ -50,7 +51,7 @@ namespace HospitalCMS_API.Controllers
                 return BadRequest(newPatient); 
             };
 
-            var existingPatient = SeedPatients.samplePatients.FirstOrDefault(patient => patient.Id == newPatient.Id);
+            var existingPatient = SeedPatients.hospitalPatients.FirstOrDefault(patient => patient.Id == newPatient.Id);
 
             if (existingPatient != null)
             {
@@ -58,18 +59,18 @@ namespace HospitalCMS_API.Controllers
                 return BadRequest(ModelState);
             }
  
-            SeedPatients.samplePatients.Add(newPatient);
+            SeedPatients.hospitalPatients.Add(newPatient);
             return CreatedAtRoute("GetPatient", new { id = newPatient.Id  }, newPatient);
         }
 
         [HttpPatch("{patientId:int}", Name = "UpdatePatient")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdatePatientData(int patientId, JsonPatchDocument<PatientModelDto> updatePatient)
+        public IActionResult UpdatePatientData(int patientId, JsonPatchDocument<PatientModel> updatePatient)
         {
             if (updatePatient == null || patientId == 0) return BadRequest();
            
-            var patientRecord = SeedPatients.samplePatients.FirstOrDefault(patient => patient.Id == patientId);
+            var patientRecord = SeedPatients.hospitalPatients.FirstOrDefault(patient => patient.Id == patientId);
 
             if (patientRecord == null) return BadRequest();
 

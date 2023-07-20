@@ -9,5 +9,12 @@ namespace HospitalCMS_API.Data.Storage
         public DbSet<PatientModel> Patients { get; set; }
         public DbSet<MedicationModel> Medications { get; set; }
         public DbSet<DoctorModel> Doctors { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PatientModel>().HasData(
+                SeedPatients.hospitalPatients
+            );
+        }
     }
 }
