@@ -1,4 +1,5 @@
 ﻿using HospitalCMS_API.Data;
+using HospitalCMS_API.Data.Storage;
 using HospitalCMS_API.Models;
 using HospitalCMS_API.Models.DTOs;
 using Microsoft.AspNetCore.JsonPatch;
@@ -10,11 +11,18 @@ namespace HospitalCMS_API.Controllers
     [ApiController]
     public class PatientController : ControllerBase 
     {
+        private readonly ApplicationDbContext _storageContext;
+
+        public PatientController(ApplicationDbContext storageContext)
+        {
+            _storageContext = storageContext;
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<PatientModelDto>> FetchPatientsData()
+        public ActionResult<IEnumerable<PatientModel>> FetchPatientsData()
         {
-            return Ok(SeedPatients.hospitalPatients);
+            return Ok(_storageContext.Patients.ToList());
         }
 
         [HttpGet("patient", Name = "GetPatient")]
@@ -23,7 +31,7 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<PatientModelDto> FetchPatientData(string lastName)
         {
-            var patientData = SeedPatients.hospitalPatients.FirstOrDefault(
+            var patientData = _storageContext.Patients.FirstOrDefault(
                 patient => patient.LastName == lastName
                 );
 
@@ -44,22 +52,24 @@ namespace HospitalCMS_API.Controllers
         {
             if (newPatient == null || newPatient.Id == 0)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest();
             }
 
             else if (!ModelState.IsValid) {
                 return BadRequest(newPatient); 
             };
 
-            var existingPatient = SeedPatients.hospitalPatients.FirstOrDefault(patient => patient.Id == newPatient.Id);
+            var existingPatient = _storageContext.Patients.FirstOrDefault(patient => patient.Id == newPatient.Id);
 
             if (existingPatient != null)
             {
                 ModelState.AddModelError("ValidateError", "Patient already exists in the system");
                 return BadRequest(ModelState);
             }
- 
-            SeedPatients.hospitalPatients.Add(newPatient);
+
+            _storageContext.Patients.Add(newPatient);
+            _storageContext.SaveChanges();
+
             return CreatedAtRoute("GetPatient", new { id = newPatient.Id  }, newPatient);
         }
 
@@ -70,7 +80,7 @@ namespace HospitalCMS_API.Controllers
         {
             if (updatePatient == null || patientId == 0) return BadRequest();
            
-            var patientRecord = SeedPatients.hospitalPatients.FirstOrDefault(patient => patient.Id == patientId);
+            var patientRecord = _storageContext.Patients.FirstOrDefault(patient => patient.Id == patientId);
 
             if (patientRecord == null) return BadRequest();
 
