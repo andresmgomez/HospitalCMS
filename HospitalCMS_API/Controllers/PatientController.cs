@@ -73,22 +73,34 @@ namespace HospitalCMS_API.Controllers
             return CreatedAtRoute("GetPatient", new { id = newPatient.Id  }, newPatient);
         }
 
-        [HttpPatch("{patientId:int}", Name = "UpdatePatient")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPut("{patientId:int}", Name = "UpdatePatient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdatePatientData(int patientId, JsonPatchDocument<PatientModel> updatePatient)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdatePatientData(int patientId, [FromBody] PatientModelDto currentPatient)
         {
-            if (updatePatient == null || patientId == 0) return BadRequest();
-           
-            var patientRecord = _storageContext.Patients.FirstOrDefault(patient => patient.Id == patientId);
+            if (patientId == 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
 
-            if (patientRecord == null) return BadRequest();
+            else if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            updatePatient.ApplyTo(patientRecord, ModelState);
+            PatientModel updatePatient = new()
+            {
+                Height = currentPatient.Height,
+                Weight = currentPatient.Weight,
+                MaritalStatus = currentPatient.MaritalStatus,
+                UpdateDate = DateTime.Now
+            };
 
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            _storageContext.Update(updatePatient);
+            _storageContext.SaveChanges();
 
-            return NoContent();
+            return Ok(updatePatient);
         }
     }
 }
