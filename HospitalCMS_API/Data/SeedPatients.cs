@@ -1,130 +1,170 @@
-﻿using HospitalCMS_API.Models.DTOs;
+﻿using HospitalCMS_API.Models;
 
 namespace HospitalCMS_API.Data
 {
     public class SeedPatients
     {
-        public static List<PatientModelDto> samplePatients = new List<PatientModelDto>
+        public static List<PatientModel> samplePatients = new List<PatientModel>
         {
-             new PatientModelDto
+             new PatientModel
                 {
                     Id = 1,
-                    FirstName = "Barbara",
-                    LastName = "Leonard",
-                    Age = 34,
-                    // LegalSex = "Female",
-                    // MaritalStatus = "Married",
-                    // Race = "Caucasian",
-                    Ethnicity = "American",
-                    Language = "English"
+                    FirstName = "Trinidad",
+                    LastName = "Franklin",
+                    Age = 55,
+                    Height = 5.1M,
+                    Weight = 210.5M,
+                    LegalSex = "Female",
+                    MaritalStatus = "Married",
+                    Race = "African American",
+                    Ethnicity = "Caribbean",
+                    Language = "English",
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
                 },
-                 new PatientModelDto
+                      new PatientModel
                 {
                     Id = 2,
-                    FirstName = "Walter",
-                    LastName = "Albritton",
-                    Age = 75,
-                    // LegalSex = "Male",
-                    // MaritalStatus = "Divorced",
-                    // Race = "Caucasian",
-                    Ethnicity = "European",
-                    Language = "English"
+                    FirstName = "Ashley",
+                    LastName = "Castaneda",
+                    Age = 23,
+                    Height = 5.5M,
+                    Weight = 131.8M,
+                    LegalSex = "Female",
+                    MaritalStatus = "Single",
+                    Race = "Hispanic",
+                    Ethnicity = "American",
+                    Language = "English",
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
                 },
-                  new PatientModelDto
+                      new PatientModel
                 {
                     Id = 3,
-                    FirstName = "Jacques",
-                    LastName = "Brown",
-                    Age = 46,
-                    // LegalSex = "Female",
-                    // MaritalStatus = "Married",
-                    // Race = "African American",
-                    Ethnicity = "Caribbean",
-                    Language = "English"
+                    FirstName = "Josh",
+                    LastName = "McGlade",
+                    Age = 32,
+                    Height = 5.7M,
+                    Weight = 248.8M,
+                    LegalSex = "Male",
+                    MaritalStatus = "Married",
+                    Race = "European American",
+                    Ethnicity = "Irish",
+                    Language = "English",
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
                 },
-                     new PatientModelDto
+                       new PatientModel
                 {
                     Id = 4,
-                    FirstName = "Willie",
-                    LastName = "Smith",
-                    Age = 73,
-                    // LegalSex = "Male",
-                    // MaritalStatus = "Widowed",
-                    // Race = "Caucasian",
+                    FirstName = "Shanon",
+                    LastName = "Anderson",
+                    Age = 68,
+                    Height = 5.6M,
+                    Weight = 109.3M,
+                    LegalSex = "Female",
+                    MaritalStatus = "Divorced",
+                    Race = "White American",
                     Ethnicity = "American",
-                    Language = "English"
+                    Language = "English",
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
                 },
-                       new PatientModelDto
+                       new PatientModel
                 {
                     Id = 5,
-                    FirstName = "Herbert",
-                    LastName = "Ortega",
-                    Age = 70,
-                    // LegalSex = "Male",
-                    // MaritalStatus = "Married",
-                    // Race = "Hispanic",
-                    Ethnicity = "South American",
-                    Language = "Spanish"
+                    FirstName = "Wilson",
+                    LastName = "Li",
+                    Age = 51,
+                    Height = 5.11M,
+                    Weight = 139.2M,
+                    LegalSex = "Male",
+                    MaritalStatus = "Married",
+                    Race = "Asian American",
+                    Ethnicity = "American",
+                    Language = "English",
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 },
-                         new PatientModelDto
+                       new PatientModel
                 {
                     Id = 6,
-                    FirstName = "Edna",
-                    LastName = "Garret",
-                    Age = 63,
-                    // LegalSex = "Female",
-                    // MaritalStatus = "Divorced",
-                    // Race = "Native American",
-                    Ethnicity = "American",
-                    Language = "English"
+                    FirstName = "Miguel",
+                    LastName = "Pena",
+                    Age = 39,
+                    Height = 5.9M,
+                    Weight = 197.3M,
+                    LegalSex = "Male",
+                    MaritalStatus = "Divorced",
+                    Race = "Hispanic",
+                    Ethnicity = "South American",
+                    Language = "Spanish",
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 },
-                          new PatientModelDto
+                       new PatientModel
                 {
                     Id = 7,
-                    FirstName = "Beryl",
-                    LastName = "Coello",
-                    Age = 28,
-                    // LegalSex = "Female",
-                    // MaritalStatus = "Single",
-                    // Race = "Caucasian",
-                    Ethnicity = "European",
-                    Language = "Portuguese"
+                    FirstName = "Robert",
+                    LastName = "Bush",
+                    Age = 47,
+                    Height = 5.8M,
+                    Weight = 233.2M,
+                    LegalSex = "Male",
+                    MaritalStatus = "Divorced",
+                    Race = "European American",
+                    Ethnicity = "American",
+                    Language = "English",
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 },
-                           new PatientModelDto
+                       new PatientModel
                 {
                     Id = 8,
-                    FirstName = "Timothy",
-                    LastName = "Ford",
-                    Age = 65,
-                    // LegalSex = "Male",
-                    // MaritalStatus = "Divorced",
-                    // Race = "Caucasian",
-                    Ethnicity = "American",
-                    Language = "English"
+                    FirstName = "Michelle",
+                    LastName = "Hagen",
+                    Age = 39,
+                    Height = 5.6M,
+                    Weight = 210.3M,
+                    LegalSex = "Female",
+                    MaritalStatus = "Single",
+                    Race = "European American",
+                    Ethnicity = "Norwegian",
+                    Language = "English",
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 },
-                             new PatientModelDto
+                       new PatientModel
                 {
                     Id = 9,
                     FirstName = "Norris",
                     LastName = "McKenney",
-                    Age = 74,
-                    // LegalSex = "Male",
-                    // MaritalStatus = "Widowed",
-                    // Race = "Caucasian",
-                    Ethnicity = "European",
-                    Language = "English"
+                    Age = 55,
+                    Height = 6.0M,
+                    Weight = 173.8M,
+                    LegalSex = "Male",
+                    MaritalStatus = "Divorced",
+                    Race = "European American",
+                    Ethnicity = "Scottish",
+                    Language = "English",
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+
                 },
-                             new PatientModelDto
+                       new PatientModel
                 {
                     Id = 10,
-                    FirstName = "Louise",
-                    LastName = "Alarcon",
-                    Age = 30,
-                    // LegalSex = "Female",
-                    // MaritalStatus = "Single",
-                    // Race = "White Hispanic",
+                    FirstName = "Krista",
+                    LastName = "Thomas",
+                    Age = 62,
+                    Height = 5.3M,
+                    Weight = 190.5M,
+                    LegalSex = "Female",
+                    MaritalStatus = "Married",
+                    Race = "Native American",
                     Ethnicity = "American",
-                    Language = "English"
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 }
         };
     }

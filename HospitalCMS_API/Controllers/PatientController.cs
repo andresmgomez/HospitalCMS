@@ -1,5 +1,6 @@
 ﻿using HospitalCMS_API.Data;
-using HospitalCMS_API.Models.DTOs;
+using HospitalCMS_API.Data.Storage;
+using HospitalCMS_API.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,20 +10,27 @@ namespace HospitalCMS_API.Controllers
     [ApiController]
     public class PatientController : ControllerBase 
     {
+        private readonly ApplicationDbContext _storageContext;
+
+        public PatientController(ApplicationDbContext storageContext)
+        {
+            _storageContext = storageContext;
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<PatientModelDto>> FetchPatientsData()
+        public ActionResult<IEnumerable<PatientModel>> FetchPatientsData()
         {
-            return Ok(SeedPatients.samplePatients);
+            return Ok(_storageContext.Patients.ToList());
         }
 
         [HttpGet("patient", Name = "GetPatient")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<PatientModelDto> FetchPatientData(string lastName)
+        public ActionResult<PatientModel> FetchPatientData(string lastName)
         {
-            var patientData = SeedPatients.samplePatients.FirstOrDefault(
+            var patientData = _storageContext.Patients.FirstOrDefault(
                 patient => patient.LastName == lastName
                 );
 
@@ -39,45 +47,49 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<PatientModelDto> CreatePatientData([FromBody] PatientModelDto newPatient)
+        public ActionResult<PatientModel> CreatePatientData([FromBody] PatientModel newPatient)
         {
-            if (newPatient == null || newPatient.Id == 0)
+            if (newPatient == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest();
             }
 
             else if (!ModelState.IsValid) {
                 return BadRequest(newPatient); 
             };
 
-            var existingPatient = SeedPatients.samplePatients.FirstOrDefault(patient => patient.Id == newPatient.Id);
+            var existingPatient = _storageContext.Patients.FirstOrDefault(patient => patient.Id == newPatient.Id);
 
             if (existingPatient != null)
             {
                 ModelState.AddModelError("ValidateError", "Patient already exists in the system");
                 return BadRequest(ModelState);
             }
- 
-            SeedPatients.samplePatients.Add(newPatient);
+            _storageContext.Patients.Add(newPatient);
+            _storageContext.SaveChanges();
+
             return CreatedAtRoute("GetPatient", new { id = newPatient.Id  }, newPatient);
         }
 
-        [HttpPatch("{patientId:int}", Name = "UpdatePatient")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPut("{patientId:int}", Name = "UpdatePatient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdatePatientData(int patientId, JsonPatchDocument<PatientModelDto> updatePatient)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdatePatientData(int patientId, [FromBody] PatientModel currentPatient)
         {
-            if (updatePatient == null || patientId == 0) return BadRequest();
-           
-            var patientRecord = SeedPatients.samplePatients.FirstOrDefault(patient => patient.Id == patientId);
+            if (patientId == 0) {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
 
-            if (patientRecord == null) return BadRequest();
+            else if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            updatePatient.ApplyTo(patientRecord, ModelState);
+            _storageContext.Update(currentPatient);
+            _storageContext.SaveChanges();
 
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            return NoContent();
+            return Ok(currentPatient);
         }
     }
 }
