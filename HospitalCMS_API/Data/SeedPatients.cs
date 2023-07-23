@@ -4,7 +4,8 @@ namespace HospitalCMS_API.Data
 {
     public class SeedPatients
     {
-        public static List<PatientModel> samplePatients = new List<PatientModel>
+
+        public static List<PatientModel> hospitalPatients = new List<PatientModel>
         {
              new PatientModel
                 {
@@ -163,6 +164,7 @@ namespace HospitalCMS_API.Data
                     MaritalStatus = "Married",
                     Race = "Native American",
                     Ethnicity = "American",
+                    Language = "English",
                     RegisterDate = DateTime.Now,
                     UpdateDate = DateTime.Now
                 }
