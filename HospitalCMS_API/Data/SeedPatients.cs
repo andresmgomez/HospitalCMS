@@ -4,6 +4,7 @@ namespace HospitalCMS_API.Data
 {
     public class SeedPatients
     {
+
         public static List<PatientModel> hospitalPatients = new List<PatientModel>
         {
              new PatientModel
@@ -20,8 +21,9 @@ namespace HospitalCMS_API.Data
                     Ethnicity = "Caribbean",
                     Language = "English",
                     RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
                 },
-                 new PatientModel
+                      new PatientModel
                 {
                     Id = 2,
                     FirstName = "Ashley",
@@ -35,8 +37,9 @@ namespace HospitalCMS_API.Data
                     Ethnicity = "American",
                     Language = "English",
                     RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
                 },
-                  new PatientModel
+                      new PatientModel
                 {
                     Id = 3,
                     FirstName = "Josh",
@@ -49,9 +52,10 @@ namespace HospitalCMS_API.Data
                     Race = "European American",
                     Ethnicity = "Irish",
                     Language = "English",
-                    RegisterDate = DateTime.Now
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
                 },
-                    new PatientModel
+                       new PatientModel
                 {
                     Id = 4,
                     FirstName = "Shanon",
@@ -64,10 +68,10 @@ namespace HospitalCMS_API.Data
                     Race = "White American",
                     Ethnicity = "American",
                     Language = "English",
-                    RegisterDate = DateTime.Now
-
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
                 },
-                     new PatientModel
+                       new PatientModel
                 {
                     Id = 5,
                     FirstName = "Wilson",
@@ -80,9 +84,10 @@ namespace HospitalCMS_API.Data
                     Race = "Asian American",
                     Ethnicity = "American",
                     Language = "English",
-                    RegisterDate = DateTime.Now
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 },
-                    new PatientModel
+                       new PatientModel
                 {
                     Id = 6,
                     FirstName = "Miguel",
@@ -95,9 +100,10 @@ namespace HospitalCMS_API.Data
                     Race = "Hispanic",
                     Ethnicity = "South American",
                     Language = "Spanish",
-                    RegisterDate = DateTime.Now
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 },
-                    new PatientModel
+                       new PatientModel
                 {
                     Id = 7,
                     FirstName = "Robert",
@@ -110,9 +116,10 @@ namespace HospitalCMS_API.Data
                     Race = "European American",
                     Ethnicity = "American",
                     Language = "English",
-                    RegisterDate = DateTime.Now
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 },
-                    new PatientModel
+                       new PatientModel
                 {
                     Id = 8,
                     FirstName = "Michelle",
@@ -125,9 +132,10 @@ namespace HospitalCMS_API.Data
                     Race = "European American",
                     Ethnicity = "Norwegian",
                     Language = "English",
-                    RegisterDate = DateTime.Now
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 },
-                    new PatientModel
+                       new PatientModel
                 {
                     Id = 9,
                     FirstName = "Norris",
@@ -140,9 +148,11 @@ namespace HospitalCMS_API.Data
                     Race = "European American",
                     Ethnicity = "Scottish",
                     Language = "English",
-                    RegisterDate = DateTime.Now
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+
                 },
-                    new PatientModel
+                       new PatientModel
                 {
                     Id = 10,
                     FirstName = "Krista",
@@ -155,7 +165,8 @@ namespace HospitalCMS_API.Data
                     Race = "Native American",
                     Ethnicity = "American",
                     Language = "English",
-                    RegisterDate = DateTime.Now
+                    RegisterDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 }
         };
     }

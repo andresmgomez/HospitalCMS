@@ -1,8 +1,6 @@
-﻿using HospitalCMS_API.Data;
 using HospitalCMS_API.Data.Storage;
 using HospitalCMS_API.Models;
-using HospitalCMS_API.Models.DTOs;
-using Microsoft.AspNetCore.JsonPatch;
+// using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalCMS_API.Controllers
@@ -29,7 +27,7 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<PatientModelDto> FetchPatientData(string lastName)
+        public ActionResult<PatientModel> FetchPatientData(string lastName)
         {
             var patientData = _storageContext.Patients.FirstOrDefault(
                 patient => patient.LastName == lastName
@@ -50,7 +48,7 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<PatientModel> CreatePatientData([FromBody] PatientModel newPatient)
         {
-            if (newPatient == null || newPatient.Id == 0)
+            if (newPatient == null)
             {
                 return BadRequest();
             }
@@ -66,7 +64,7 @@ namespace HospitalCMS_API.Controllers
                 ModelState.AddModelError("ValidateError", "Patient already exists in the system");
                 return BadRequest(ModelState);
             }
-
+            
             _storageContext.Patients.Add(newPatient);
             _storageContext.SaveChanges();
 
@@ -77,7 +75,24 @@ namespace HospitalCMS_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult UpdatePatientData(int patientId, [FromBody] PatientModelDto currentPatient)
+        public IActionResult UpdatePatientData(int patientId, [FromBody] PatientModel currentPatient)
+        {
+            if (patientId == 0) {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            else if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _storageContext.Update(currentPatient);
+            _storageContext.SaveChanges();
+
+            return Ok(currentPatient);
+        }
+
+        public IActionResult UpdatePatientData(int patientId, [FromBody] PatientModel currentPatient)
         {
             if (patientId == 0)
             {
@@ -89,18 +104,10 @@ namespace HospitalCMS_API.Controllers
                 return BadRequest(ModelState);
             }
 
-            PatientModel updatePatient = new()
-            {
-                Height = currentPatient.Height,
-                Weight = currentPatient.Weight,
-                MaritalStatus = currentPatient.MaritalStatus,
-                UpdateDate = DateTime.Now
-            };
-
-            _storageContext.Update(updatePatient);
+            _storageContext.Update(currentPatient);
             _storageContext.SaveChanges();
 
-            return Ok(updatePatient);
+            return Ok(currentPatient);
         }
     }
 }

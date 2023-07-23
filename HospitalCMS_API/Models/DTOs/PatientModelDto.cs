@@ -1,17 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace HospitalCMS_API.Models.DTOs
 {
     public class PatientModelDto
     {
-        [Range(5.1, 6.5)]
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
         public decimal Height { get; set; }
-
-        [Range(120.1, 250.6)]
         public decimal Weight { get; set; }
-
-        [StringLength(20, MinimumLength = 6, ErrorMessage = "Marital Status cannot be less than 6 characters")]
+        public string LegalSex { get; set; }
         public string MaritalStatus { get; set; }
+        public string Race { get; set; }
+        public string Ethnicity { get; set; }
+        public string Language { get; set; }
         public DateTime UpdateDate { get; set; }
     }
 }
