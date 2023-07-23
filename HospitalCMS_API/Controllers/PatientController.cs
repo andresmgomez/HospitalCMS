@@ -91,23 +91,5 @@ namespace HospitalCMS_API.Controllers
 
             return Ok(currentPatient);
         }
-
-        public IActionResult UpdatePatientData(int patientId, [FromBody] PatientModel currentPatient)
-        {
-            if (patientId == 0)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-
-            else if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _storageContext.Update(currentPatient);
-            _storageContext.SaveChanges();
-
-            return Ok(currentPatient);
-        }
     }
 }
