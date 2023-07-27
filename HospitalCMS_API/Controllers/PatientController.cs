@@ -1,13 +1,12 @@
 using HospitalCMS_API.Data.Storage;
 using HospitalCMS_API.Models;
-// using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalCMS_API.Controllers
 {
     [Route("api/v1/hospital/patients")]
     [ApiController]
-    public class PatientController : ControllerBase 
+    public class PatientController : ControllerBase
     {
         private readonly ApplicationDbContext _storageContext;
 
@@ -54,7 +53,7 @@ namespace HospitalCMS_API.Controllers
             }
 
             else if (!ModelState.IsValid) {
-                return BadRequest(newPatient); 
+                return BadRequest(newPatient);
             };
 
             var existingPatient = _storageContext.Patients.FirstOrDefault(patient => patient.Id == newPatient.Id);
@@ -64,11 +63,11 @@ namespace HospitalCMS_API.Controllers
                 ModelState.AddModelError("ValidateError", "Patient already exists in the system");
                 return BadRequest(ModelState);
             }
-            
+
             _storageContext.Patients.Add(newPatient);
             _storageContext.SaveChanges();
 
-            return CreatedAtRoute("GetPatient", new { id = newPatient.Id  }, newPatient);
+            return CreatedAtRoute("GetPatient", new { id = newPatient.Id }, newPatient);
         }
 
         [HttpPut("{patientId:int}", Name = "UpdatePatient")]
